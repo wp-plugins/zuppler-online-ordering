@@ -9,9 +9,9 @@ Zuppler Online Ordering Plugin enables customers to order food online directly f
 
 == Description ==
 
-** Zuppler Online Ordering Plugin lets customers order food online directly from a restaurant's website, for takeout, delivery, dine-in and catering. ** Zuppler's state of the art online ordering technology can be customized to match the brand, look and feel of the restaurant website. Customers stay on the restaurant website during the entire online ordering process. 
+**Zuppler Online Ordering Plugin lets customers order food online directly from a restaurant's website, for takeout, delivery, dine-in and catering.** Zuppler's state of the art online ordering technology can be customized to match the brand, look and feel of the restaurant website. Customers stay on the restaurant website during the entire online ordering process. 
 
-** Zuppler is currently serving customers in USA & Canada. **
+**Zuppler is currently serving customers in USA & Canada.**
 
 You can learn more about Zuppler Powered Online Ordering Menus and programs at [ZupplerWorks.com](http://zupplerWorks.com/)
 
