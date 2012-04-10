@@ -339,7 +339,7 @@ function zuppler_online_ordering_admin() {
 	include('zuppler-online-ordering-admin.php');
 }
 function zuppler_online_ordering_admin_actions() {
-    add_menu_page('Zuppler Online Ordering Options', 'Zuppler Online Ordering', "edit_posts", "zuppler-online-ordering-options", "zuppler_online_ordering_admin", plugin_dir_url(__FILE__) . "/images/zuppler-icon-16px.png");
+    add_menu_page('Zuppler Online Ordering Options', 'Zuppler Online Ordering', "edit_posts", "zuppler-online-ordering-options", "zuppler_online_ordering_admin", plugin_dir_url(__FILE__) . "images/zuppler-icon-16px.png");
 }
 add_action('admin_menu', 'zuppler_online_ordering_admin_actions');
 
