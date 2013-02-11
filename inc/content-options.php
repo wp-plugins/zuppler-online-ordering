@@ -77,6 +77,18 @@ $options = array (
     ' ),
 
   array("type" => "close"),
+  array( "type" => "open", "name" => "Advanced Options" ),
+  array(
+    "name" => "Transport type",
+    "id" => $shortname."_transport_type",
+    "type" => "radio",
+    "std" => "0",
+    "options" => array(
+      array("value" => "0", "label" => "Regular"),
+      array("value" => "1", "label" => "XSS"),
+    ),
+    "desc" => 'Don\'t change the transport type unless you are adviced by Zuppler Tech team.' ),
+  array("type" => "close")
 
 ); // $options
 

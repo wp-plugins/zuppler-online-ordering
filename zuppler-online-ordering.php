@@ -54,6 +54,7 @@ class Zuppler_integration {
   	$this->channel_type     = get_option('zuppler_channel_type');
   	$this->restaurant_slug  = get_option('zuppler_restaurant_slug');
     $this->appearence       = get_option('zuppler_appearence');
+    $this->transport_type   = get_option('zuppler_transport_type');
   	$this->listing_template = html_entity_decode(get_option('zuppler_listing_template'));
   	
   	$file = dirname(__FILE__) . '/zuppler-online-ordering.php';
@@ -164,8 +165,12 @@ class Zuppler_integration {
   }
 
   function prepare_menu_assets() {
+    $assets = "";
+    if(!empty($this->transport_type) && $this->transport_type == 1) {
+      $assets .= "<script type='text/javascript' charset='utf-8'>window.zuppler_transport = 'xss';</script>\n";
+    }
     $restaurant = (empty($this->custom_integration)) ? $this->restaurant_slug : $this->custom_integration;
-    $assets = "<script type='text/javascript' charset='utf-8' src='{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/menu.js'></script>\n";
+    $assets .= "<script type='text/javascript' charset='utf-8' src='{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/menu.js{$transport}'></script>\n";
     return $assets;
   }
   
