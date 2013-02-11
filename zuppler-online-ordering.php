@@ -5,7 +5,7 @@ Plugin URI: http://api.zuppler.com/docs/wordpress-plugin.html
 Description: This plugin lets you easily integrate Zuppler Online Ordering.
 Author: Zuppler Dev Team
 Author URI: http://zupplerworks.com/
-Version: 1.1.1
+Version: 1.1.2
 */
 
 /*  Copyright 2012 Zuppler Dev Team
@@ -73,6 +73,7 @@ class Zuppler_integration {
     $t_cart_position  = ($this->appearence == 1 || $this->appearence == 3) ? "left" : "right";
     
     $tmpl = '
+      <a href="#zuppler-cart" class="z_view_cart" style="display:none;">View Order</a>
       <div id="z_content" class="cart-'.$t_cart_position.'">
         '.$t_account_big.'
         <div id="z_main"><div id="z_main_column">
