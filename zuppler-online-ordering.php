@@ -5,7 +5,7 @@ Plugin URI: http://api.zuppler.com/docs/wordpress-plugin.html
 Description: This plugin lets you easily integrate Zuppler Online Ordering.
 Author: Zuppler Dev Team
 Author URI: http://zupplerworks.com/
-Version: 1.1
+Version: 1.1.1
 */
 
 /*  Copyright 2012 Zuppler Dev Team
