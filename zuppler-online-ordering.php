@@ -204,14 +204,14 @@ class Zuppler_integration {
     if($this->load_profile_assets) {
       $init .= "
           function profileInit() {
-            $('#zuppler-welcome').ZupplerProfile('welcome_message');
-            $('#zuppler-cuisines').ZupplerProfile('cuisines');
-            $('#zuppler-amenities').ZupplerProfile('amenities');
-            $('#zuppler-events').ZupplerProfile('events');
-            $('#zuppler-discounts').ZupplerProfile('discounts');
-            $('#zuppler-pictures').ZupplerProfile('gallery', _.template(document.getElementById('customGallery').text));
-            $('#zuppler-locations').ZupplerProfile('addresses');
-            $('#zuppler-hours').ZupplerProfile('working_hours');
+            jQuery('#zuppler-welcome').ZupplerProfile('welcome_message');
+            jQuery('#zuppler-cuisines').ZupplerProfile('cuisines');
+            jQuery('#zuppler-amenities').ZupplerProfile('amenities');
+            jQuery('#zuppler-events').ZupplerProfile('events');
+            jQuery('#zuppler-discounts').ZupplerProfile('discounts');
+            jQuery('#zuppler-pictures').ZupplerProfile('gallery', _.template(document.getElementById('customGallery').text));
+            jQuery('#zuppler-locations').ZupplerProfile('addresses');
+            jQuery('#zuppler-hours').ZupplerProfile('working_hours');
             if (typeof window['profileLoaded'] == 'function') profileLoaded();
           }
       ";
@@ -219,7 +219,7 @@ class Zuppler_integration {
     if($this->load_reviews_assets) {
       $init .= "
           function reviewsInit() {
-            $('#zuppler-reviews').ZupplerReviews({});
+            jQuery('#zuppler-reviews').ZupplerReviews({});
           }
       ";
     }
