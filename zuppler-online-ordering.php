@@ -5,7 +5,7 @@ Plugin URI: http://api.zuppler.com/docs/wordpress-plugin.html
 Description: This plugin lets you easily integrate Zuppler Online Ordering.
 Author: Zuppler Dev Team
 Author URI: http://zupplerworks.com/
-Version: 1.1
+Version: 1.1.2
 */
 
 /*  Copyright 2012 Zuppler Dev Team
@@ -54,6 +54,7 @@ class Zuppler_integration {
   	$this->channel_type     = get_option('zuppler_channel_type');
   	$this->restaurant_slug  = get_option('zuppler_restaurant_slug');
     $this->appearence       = get_option('zuppler_appearence');
+    $this->transport_type   = get_option('zuppler_transport_type');
   	$this->listing_template = html_entity_decode(get_option('zuppler_listing_template'));
   	
   	$file = dirname(__FILE__) . '/zuppler-online-ordering.php';
@@ -72,6 +73,7 @@ class Zuppler_integration {
     $t_cart_position  = ($this->appearence == 1 || $this->appearence == 3) ? "left" : "right";
     
     $tmpl = '
+      <a href="#zuppler-cart" class="z_view_cart" style="display:none;">View Order</a>
       <div id="z_content" class="cart-'.$t_cart_position.'">
         '.$t_account_big.'
         <div id="z_main"><div id="z_main_column">
@@ -164,8 +166,12 @@ class Zuppler_integration {
   }
 
   function prepare_menu_assets() {
+    $assets = "";
+    if(!empty($this->transport_type) && $this->transport_type == 1) {
+      $assets .= "<script type='text/javascript' charset='utf-8'>window.zuppler_transport = 'xss';</script>\n";
+    }
     $restaurant = (empty($this->custom_integration)) ? $this->restaurant_slug : $this->custom_integration;
-    $assets = "<script type='text/javascript' charset='utf-8' src='{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/menu.js'></script>\n";
+    $assets .= "<script type='text/javascript' charset='utf-8' src='{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/menu.js{$transport}'></script>\n";
     return $assets;
   }
   
@@ -198,14 +204,14 @@ class Zuppler_integration {
     if($this->load_profile_assets) {
       $init .= "
           function profileInit() {
-            $('#zuppler-welcome').ZupplerProfile('welcome_message');
-            $('#zuppler-cuisines').ZupplerProfile('cuisines');
-            $('#zuppler-amenities').ZupplerProfile('amenities');
-            $('#zuppler-events').ZupplerProfile('events');
-            $('#zuppler-discounts').ZupplerProfile('discounts');
-            $('#zuppler-pictures').ZupplerProfile('gallery', _.template(document.getElementById('customGallery').text));
-            $('#zuppler-locations').ZupplerProfile('addresses');
-            $('#zuppler-hours').ZupplerProfile('working_hours');
+            jQuery('#zuppler-welcome').ZupplerProfile('welcome_message');
+            jQuery('#zuppler-cuisines').ZupplerProfile('cuisines');
+            jQuery('#zuppler-amenities').ZupplerProfile('amenities');
+            jQuery('#zuppler-events').ZupplerProfile('events');
+            jQuery('#zuppler-discounts').ZupplerProfile('discounts');
+            jQuery('#zuppler-pictures').ZupplerProfile('gallery', _.template(document.getElementById('customGallery').text));
+            jQuery('#zuppler-locations').ZupplerProfile('addresses');
+            jQuery('#zuppler-hours').ZupplerProfile('working_hours');
             if (typeof window['profileLoaded'] == 'function') profileLoaded();
           }
       ";
@@ -213,7 +219,7 @@ class Zuppler_integration {
     if($this->load_reviews_assets) {
       $init .= "
           function reviewsInit() {
-            $('#zuppler-reviews').ZupplerReviews({});
+            jQuery('#zuppler-reviews').ZupplerReviews({});
           }
       ";
     }
