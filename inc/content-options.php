@@ -77,12 +77,24 @@ $options = array (
     ' ),
 
   array("type" => "close"),
+  array( "type" => "open", "name" => "Advanced Options" ),
+  array(
+    "name" => "Transport type",
+    "id" => $shortname."_transport_type",
+    "type" => "radio",
+    "std" => "0",
+    "options" => array(
+      array("value" => "0", "label" => "Regular"),
+      array("value" => "1", "label" => "XSS"),
+    ),
+    "desc" => 'Don\'t change the transport type unless you are adviced by Zuppler Tech team.' ),
+  array("type" => "close")
 
 ); // $options
 
 
 
-if ( 'save' == $_POST['action'] ) {
+if ( 'save' == @$_POST['action'] ) {
   if ( get_magic_quotes_gpc() ) {
     $_POST      = array_map( 'stripslashes_deep', $_POST );
     $_REQUEST   = array_map( 'stripslashes_deep', $_REQUEST );
@@ -95,7 +107,7 @@ if ( 'save' == $_POST['action'] ) {
     }
   }
   ?><div class="updated"><p><strong><?php _e('Options saved.'); ?></strong></p></div><?php
-} else if( 'reset' == $_POST['action'] ) {
+} else if( 'reset' == @$_POST['action'] ) {
   foreach ($options as $value) {
     if(empty($value['std'])) delete_option( $value['id'] );
     else update_option( $value['id'], $_POST[ $value['std'] ]  );
