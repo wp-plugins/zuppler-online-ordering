@@ -94,7 +94,7 @@ $options = array (
 
 
 
-if ( 'save' == $_POST['action'] ) {
+if ( 'save' == @$_POST['action'] ) {
   if ( get_magic_quotes_gpc() ) {
     $_POST      = array_map( 'stripslashes_deep', $_POST );
     $_REQUEST   = array_map( 'stripslashes_deep', $_REQUEST );
@@ -107,7 +107,7 @@ if ( 'save' == $_POST['action'] ) {
     }
   }
   ?><div class="updated"><p><strong><?php _e('Options saved.'); ?></strong></p></div><?php
-} else if( 'reset' == $_POST['action'] ) {
+} else if( 'reset' == @$_POST['action'] ) {
   foreach ($options as $value) {
     if(empty($value['std'])) delete_option( $value['id'] );
     else update_option( $value['id'], $_POST[ $value['std'] ]  );

@@ -5,7 +5,7 @@ Plugin URI: http://api.zuppler.com/docs/wordpress-plugin.html
 Description: This plugin lets you easily integrate Zuppler Online Ordering.
 Author: Zuppler Dev Team
 Author URI: http://zupplerworks.com/
-Version: 1.1.3
+Version: 1.1.3.1
 */
 
 /*  Copyright 2012 Zuppler Dev Team
@@ -171,7 +171,7 @@ class Zuppler_integration {
       $assets .= "<script type='text/javascript' charset='utf-8'>window.zuppler_transport = 'xss';</script>\n";
     }
     $restaurant = (empty($this->custom_integration)) ? $this->restaurant_slug : $this->custom_integration;
-    $assets .= "<script type='text/javascript' charset='utf-8' src='{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/menu.js{$transport}'></script>\n";
+    $assets .= "<script type='text/javascript' charset='utf-8' src='{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/menu.js'></script>\n";
     return $assets;
   }
   
