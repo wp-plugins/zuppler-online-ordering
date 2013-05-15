@@ -95,13 +95,13 @@ $options = array (
 
 
 if ( 'save' == @$_POST['action'] ) {
-  if ( get_magic_quotes_gpc() ) {
-    $_POST      = array_map( 'stripslashes_deep', $_POST );
-    $_REQUEST   = array_map( 'stripslashes_deep', $_REQUEST );
-  }
+  // if ( get_magic_quotes_gpc() ) {
+  //   $_POST      = array_map( 'stripslashes_deep', $_POST );
+  //   $_REQUEST   = array_map( 'stripslashes_deep', $_REQUEST );
+  // }
   foreach ($options as $value) {
     if( isset( $_POST[ $value['id'] ] ) ) {
-      update_option( $value['id'], $_POST[ $value['id'] ]  ); 
+      update_option( $value['id'], htmlentities(stripslashes($_POST[ $value['id'] ] ), ENT_QUOTES)  ); 
     } else { 
       delete_option( $value['id'] ); 
     }
@@ -110,7 +110,7 @@ if ( 'save' == @$_POST['action'] ) {
 } else if( 'reset' == @$_POST['action'] ) {
   foreach ($options as $value) {
     if(empty($value['std'])) delete_option( $value['id'] );
-    else update_option( $value['id'], $_POST[ $value['std'] ]  );
+    else update_option( $value['id'], htmlentities(stripslashes($_POST[ $value['std'] ]), ENT_QUOTES)  );
   }
 }
 
@@ -162,7 +162,8 @@ if ( 'save' == @$_POST['action'] ) {
 
         
 <?php 
-foreach ($options as $value) { 
+foreach ($options as $value) {
+  $stored_value = html_entity_decode(get_settings( $value['id'] ));
   switch ( $value['type'] ) {
   
     case "open": ?>
@@ -188,7 +189,7 @@ foreach ($options as $value) {
       <tr id="<?php echo $value['id']; ?>_row">
         <th scope="row"><?php echo $value['name']; ?></th>
         <td>
-          <input type="text" name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" value="<?php if ( get_settings( $value['id'] ) != "") { echo get_settings( $value['id'] ); } else { echo $value['std']; } ?>" class="regular-text" />
+          <input type="text" name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" value="<?php if ( $stored_value != "") { echo $stored_value; } else { echo $value['std']; } ?>" class="regular-text" />
           <?php if (!empty($value['desc'])) { ?><br /><span class="description"><?php echo $value['desc']; ?></span><?php } ;?>
         </td>
       </tr>
@@ -207,7 +208,7 @@ foreach ($options as $value) {
       <tr id="<?php echo $value['id']; ?>_row">
         <td colspan="2">
           <label><?php echo $value['name']; ?></label>
-          <textarea name="<?php echo $value['id']; ?>" style="width:99%; height:300px;" class="z-code-editor"><?php if ( get_settings( $value['id'] ) != "") { echo get_settings( $value['id'] ); } else { echo $value['std']; } ?></textarea>
+          <textarea name="<?php echo $value['id']; ?>" style="width:99%; height:300px;" class="z-code-editor"><?php if ( $stored_value != "") { echo $stored_value; } else { echo $value['std']; } ?></textarea>
             <?php if (!empty($value['desc'])) { ?>
             <div style="clear:both;">
               <span class="description"><?php echo $value['desc']; ?></span>
@@ -224,7 +225,7 @@ foreach ($options as $value) {
         <th scope="row"><?php echo $value['name']; ?></th>
         <td>
           <?php
-            $selected = ( get_settings($value['id']) != "" ) ? get_settings($value['id']) : $value["std"];
+            $selected = ( $stored_value != "" ) ? $stored_value : $value["std"];
           ?>
           <select style="width:240px;" name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>">
             <?php foreach ($value['options'] as $option) { ?>
@@ -245,11 +246,11 @@ foreach ($options as $value) {
         <?php if(isset($value['appearence']) && $value['appearence'] == 'large') { ?>
           <td colspan="2">
             <label><?php echo $value['name']; ?></label><br /><br />
-        <? } else { ?>
+        <?php } else { ?>
           <th scope="row"><?php echo $value['name']; ?></th>
           <td>
         <?php } ?>
-          <?php $selected = ( get_settings($value['id']) != "" ) ? get_settings($value['id']) : $value["std"]; ?>
+          <?php $selected = ( $stored_value != "" ) ? $stored_value : $value["std"]; ?>
           <?php foreach ($value['options'] as $option) { ?>
             <label>
               <input type="radio" name="<?php echo $value['id']; ?>" value="<?php echo $option['value']; ?>" <?php if ( $selected == $option['value']) { echo ' checked="checked"'; } ?>/> 
@@ -267,7 +268,7 @@ foreach ($options as $value) {
 
       <tr id="<?php echo $value['id']; ?>_row">
         <th scope="row"><?php echo $value['name']; ?></th>
-        <td><? if(get_settings($value['id'])){ $checked = "checked=\"checked\""; }else{ $checked = ""; } ?>
+        <td><?php if($stored_value){ $checked = "checked=\"checked\""; }else{ $checked = ""; } ?>
           <input type="checkbox" name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" value="true" <?php echo $checked; ?> />
           <?php if (!empty($value['desc'])) { ?><br /><span class="description"><?php echo $value['desc']; ?></span><?php } ;?>
         </td>
