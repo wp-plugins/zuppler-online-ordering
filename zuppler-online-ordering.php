@@ -62,7 +62,9 @@ class Zuppler_integration {
   	
 	  add_shortcode('zuppler',  array(&$this, 'zuppler_shortcodes') );
 	  add_filter('widget_text',  'do_shortcode');
-  	add_action('wp_footer', array(&$this, 'print_assets'));
+    add_action('wp_footer', array(&$this, 'print_assets'), 11);
+  	add_action('wp_footer', array(&$this, 'enqueue_scripts'), 11);
+    add_filter('clean_url', array(&$this, 'add_defer_to_zuppler_script'), 11, 1 );
   }
   
   function zuppler_shortcodes($atts, $content = null) {
@@ -136,15 +138,59 @@ class Zuppler_integration {
       echo $this->prepare_menu_assets();
       echo $this->prepare_init();
     } else if($this->load_reviews_assets) {
-      echo $this->prepare_reviews_assets();
       echo $this->prepare_init();
     } else if($this->load_profile_assets) {
-      echo $this->prepare_profile_assets();
       echo $this->prepare_init();
     }
     if($this->check_is_restaurant_open) {
       echo $this->prepare_listing_assets();
     }
+  }
+
+  function add_defer_to_zuppler_script( $url ) {
+      if (
+      FALSE === strpos( $url, $this->zupplerhost ) or
+      FALSE === strpos( $url, '.js' )
+      )
+      { // not our file
+          return $url;
+      }
+      return "$url' defer='defer";
+  }
+
+  function enqueue_scripts() {
+    $restaurant = (empty($this->custom_integration)) ? $this->restaurant_slug : $this->custom_integration;
+    
+    if($this->load_menu_assets) {
+      wp_register_script(
+        "zuppler-online-ordering-menu",
+        "{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/menu.js",
+        false,
+        "1.0",
+        true);
+      wp_enqueue_script( 'zuppler-online-ordering-menu' );
+    }
+
+    if($this->load_reviews_assets) {
+      wp_register_script(
+        "zuppler-online-ordering-reviews",
+        "{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/reviews.js",
+        false,
+        "1.0",
+        true);
+      wp_enqueue_script( 'zuppler-online-ordering-reviews' );
+    }
+
+    if($this->load_profile_assets) {
+      wp_register_script(
+        "zuppler-online-ordering-profile",
+        "{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/profile.js",
+        false,
+        "1.0",
+        true);
+      wp_enqueue_script( 'zuppler-online-ordering-profile' );
+    }
+
   }
   
   function prepare_listing_assets(){
@@ -170,8 +216,6 @@ class Zuppler_integration {
     if(!empty($this->transport_type) && $this->transport_type == 1) {
       $assets .= "<script type='text/javascript' charset='utf-8'>window.zuppler_transport = 'xss';</script>\n";
     }
-    $restaurant = (empty($this->custom_integration)) ? $this->restaurant_slug : $this->custom_integration;
-    $assets .= "<script type='text/javascript' charset='utf-8' src='{$this->zupplerhost}/channels/{$this->channel_slug}/restaurants/{$restaurant}/menu.js'></script>\n";
     return $assets;
   }
   
