@@ -2,8 +2,8 @@
 Contributors: bogdan.silivestru
 Tags: order online, shopping cart, restaurant, food
 Requires at least: 2.8
-Tested up to: 3.5.1
-Stable tag: 1.1.3.2
+Tested up to: 3.7.1
+Stable tag: 1.1.3.3
 
 Zuppler Online Ordering Plugin enables customers to order food online directly from restaurant website.
 
