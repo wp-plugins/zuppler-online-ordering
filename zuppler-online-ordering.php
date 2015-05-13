@@ -31,7 +31,7 @@ class Zuppler_integration {
   var $load_menu_assets = false;
   var $load_reviews_assets = false;
   var $load_profile_assets = false;
-  var $zupplerhost = "http://api.zuppler.com";
+  var $zupplerhost = "//api.zuppler.com";
   var $channel_slug;
   var $channel_type; // 0 = regular; 1 = network
   var $restaurant_slug;
@@ -196,7 +196,7 @@ class Zuppler_integration {
   function prepare_listing_assets(){
     $plugin_url = plugins_url() . "/zuppler-online-ordering";
     $assets = "
-    <script>window.jQuery || document.write('<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\"><\/script>')</script>\n
+    <script>window.jQuery || document.write('<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\"><\/script>')</script>\n
     <script type='text/javascript' charset='utf-8' src='{$plugin_url}/js/restaurant-listing-utils.js'></script>\n
     <script type='text/javascript' charset='utf-8'>
       jQuery(document).ready(function($) {
