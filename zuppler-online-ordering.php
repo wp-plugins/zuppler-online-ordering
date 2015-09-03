@@ -5,7 +5,7 @@ Plugin URI: http://api.zuppler.com/docs/wordpress-plugin.html
 Description: This plugin lets you easily integrate Zuppler Online Ordering.
 Author: Zuppler Dev Team
 Author URI: http://zupplerworks.com/
-Version: 1.1.4
+Version: 1.1.5
 */
 
 /*  Copyright 2012 Zuppler Dev Team
@@ -26,16 +26,14 @@ Version: 1.1.4
 */
 
 require_once('inc/Mustache.php');
-
 class Zuppler_integration {
   var $load_menu_assets = false;
   var $load_reviews_assets = false;
   var $load_profile_assets = false;
-  var $zupplerhost = "//api.zuppler.com";
+  var $zupplerhost = "http://api.zuppler.com";
   var $channel_slug;
   var $channel_type; // 0 = regular; 1 = network
   var $restaurant_slug;
-  var $appearence;
   var $custom_integration = false;
   var $plugin_url;
   
@@ -53,7 +51,6 @@ class Zuppler_integration {
     $this->channel_slug     = get_option('zuppler_channel_slug');
   	$this->channel_type     = get_option('zuppler_channel_type');
   	$this->restaurant_slug  = get_option('zuppler_restaurant_slug');
-    $this->appearence       = get_option('zuppler_appearence');
     $this->transport_type   = get_option('zuppler_transport_type');
   	$this->listing_template = html_entity_decode(get_option('zuppler_listing_template'));
   	
@@ -69,24 +66,7 @@ class Zuppler_integration {
   
   function zuppler_shortcodes($atts, $content = null) {
     
-    $t_account = '<div id="zuppler-account"></div>';
-    $t_account_small  = ($this->appearence == 1 || $this->appearence == 2) ? $t_account : "";
-    $t_account_big    = ($this->appearence == 3 || $this->appearence == 4) ? $t_account : "";
-    $t_cart_position  = ($this->appearence == 1 || $this->appearence == 3) ? "left" : "right";
-    
-    $tmpl = '
-      <a href="#zuppler-cart" class="z_view_cart" style="display:none;">View Order</a>
-      <div id="z_content" class="cart-'.$t_cart_position.'">
-        '.$t_account_big.'
-        <div id="z_main"><div id="z_main_column">
-          '.$t_account_small.'
-          <div id="zuppler-menu"></div>
-        </div></div>
-        <div id="z_sidebar">
-          <div id="zuppler-cart"></div>
-        </div>
-      </div>
-    ';
+    $tmpl = '<div id="zuppler-menu"></div>';
     
     $str = "";
     
@@ -299,7 +279,7 @@ class Zuppler_integration {
     $data_url = $this->zupplerhost . "/channels/" . $this->channel_slug . ".json";
     
     $details = get_transient( $this->channel_slug . '_details' );
-    if ( false === $details ) {
+    if ( false === $details) {
       $response = wp_remote_get($data_url, array( 'User-Agent' => 'WordPress Zuppler Plugin' ));
       $response_code = wp_remote_retrieve_response_code( $response );
       

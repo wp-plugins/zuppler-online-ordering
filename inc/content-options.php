@@ -35,24 +35,6 @@ $options = array (
     "type" => "text" ),
   array("type" => "close"),
 
-
-  array( "type" => "open", "name" => "Order Online page appearence" ),
-
-  array(
-    "name" => "Choose your layout style",
-    "id" => $shortname."_appearence",
-    "type" => "radio",
-    "appearence" => "large",
-    "std" => "1",
-    "options" => array(
-      array("value" => "1", "label" => "<img src='" . $plugin_url . "/images/tmpl1.gif'>"),
-      array("value" => "2", "label" => "<img src='" . $plugin_url . "/images/tmpl2.gif'>"),
-      array("value" => "3", "label" => "<img src='" . $plugin_url . "/images/tmpl3.gif'>"),
-      array("value" => "4", "label" => "<img src='" . $plugin_url . "/images/tmpl4.gif'>"),
-    ) ),
-  array("type" => "close"),
-
-
   array( "type" => "open", "name" => "Channel Options" ),
   array(
     "name" => "Zuppler Channel Type",
@@ -99,13 +81,17 @@ if ( 'save' == @$_POST['action'] ) {
   //   $_POST      = array_map( 'stripslashes_deep', $_POST );
   //   $_REQUEST   = array_map( 'stripslashes_deep', $_REQUEST );
   // }
+  
   foreach ($options as $value) {
-    if( isset( $_POST[ $value['id'] ] ) ) {
-      update_option( $value['id'], htmlentities(stripslashes($_POST[ $value['id'] ] ), ENT_QUOTES)  ); 
-    } else { 
-      delete_option( $value['id'] ); 
+    if( isset($value['id']) ) {
+      if( isset( $_POST[ $value['id'] ] ) ) {
+        update_option( $value['id'], htmlentities(stripslashes($_POST[ $value['id'] ] ), ENT_QUOTES)  ); 
+      } else { 
+        delete_option( $value['id'] ); 
+      }
     }
   }
+
   ?><div class="updated"><p><strong><?php _e('Options saved.'); ?></strong></p></div><?php
 } else if( 'reset' == @$_POST['action'] ) {
   foreach ($options as $value) {
@@ -163,7 +149,9 @@ if ( 'save' == @$_POST['action'] ) {
         
 <?php 
 foreach ($options as $value) {
-  $stored_value = html_entity_decode(get_settings( $value['id'] ));
+  if( isset($value['id']) ) {
+    $stored_value = html_entity_decode(get_option( $value['id'] ));
+  }
   switch ( $value['type'] ) {
   
     case "open": ?>
@@ -189,7 +177,7 @@ foreach ($options as $value) {
       <tr id="<?php echo $value['id']; ?>_row">
         <th scope="row"><?php echo $value['name']; ?></th>
         <td>
-          <input type="text" name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" value="<?php if ( $stored_value != "") { echo $stored_value; } else { echo $value['std']; } ?>" class="regular-text" />
+          <input type="text" name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" value="<?php if ( $stored_value != "") { echo $stored_value; } else if(isset($value['std'])) { echo $value['std']; } ?>" class="regular-text" />
           <?php if (!empty($value['desc'])) { ?><br /><span class="description"><?php echo $value['desc']; ?></span><?php } ;?>
         </td>
       </tr>
